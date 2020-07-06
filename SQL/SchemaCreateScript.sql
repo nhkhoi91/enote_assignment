@@ -14,6 +14,14 @@ USE assignment;
     phone_number: all NaN here. Ideally, all phone number should be converted to E.164 format and 
     use BIGINT as data type. However, as it is often not the case, I use varchar here.
     
+    birth_date: there are 2 issues with birth_date column:
+		+ Inconsist data format: there are 2 type of formats: %m/%d/%y and %d-%b-%y. This is not an issue for MySQL, as 
+        DATE datatype is always in %Y-%m-%d format. This issue is fixed using pandas.astype('datetime64[ns]') function,
+        because pandas is smart enough to recognize different format and convert it to datetime64.
+        + Year without century as a zero-padded decimal number: this is a more serious issue, as csv file does not 
+		contain any metadata for other programs to derive the century part. To fix this, I made an educated guess that
+        a customer must be at least 10 years old to make a transaction. Hence, if year is greater than 10 then 19 is added
+        as century, otherwise 20 is added. This transformation is written in Python code.
     */
 DROP TABLE IF EXISTS Transaction;
 DROP TABLE IF EXISTS Account;
@@ -44,6 +52,16 @@ CREATE TABLE Account (
     
     transaction type: I use CHAR here to optimize space. Depend on use case
     this can be changed to VARCHAR
+    
+    There are duplication in id_transaction colume, leading to duplication in 
+    (id_transaction, id_account, transaction_type, transaction_date) tuple. There are two posibilities I can think of:
+        - id_transaction is a unique column. Somehow, the manual extraction violates this attribute.
+        - id_transaction is reseted after a period of time (1 day for example), leading to the fact that 
+        id_transaction cannot stand alone but must be part of a primary key tuple. As the whole 
+        (id_transaction, id_account, transaction_type, transaction_date) tuple also contains duplication,
+        either some more columns are missing from this table, or transaction_amount is also part of the primary key.
+	As I do not have enough context and do not want to alter data here, I would make all 5 columns Primary Key (as there 
+    is no duplication on this (yet)). Logically, this solution is not good, as transaction_amount could also be duplicated.
 */
 
 

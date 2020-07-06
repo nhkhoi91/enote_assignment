@@ -1,6 +1,6 @@
 # ENOTE ASSIGNMENT
-This repo contains 2 SQL files for creating required schema and a transaction report, 
-as well as Python code for loading csv files and pushing to respective database tables.
+This repo contains part A of the assignment in `Assignment.md`, 2 SQL files for creating required schema in `/data` folder, 
+and a transaction report, as well as Python code for loading csv files and pushing to respective database tables.
 
 ## Getting started
 These instructions will help you create the required schema on MySQL, insert data into these
