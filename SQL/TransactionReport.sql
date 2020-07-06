@@ -12,7 +12,7 @@ select * from
 WHERE gen_date between '2020-02-15' and '2020-06-06') t1
 JOIN (SELECT 1234 id_person union SELECT 345) t2;
 
-SELECT month_table.id_person, date_format(gen_date, '%m.%Y') as month, COALESCE(sum(t2.transaction_amount), 0)
+SELECT month_table.id_person, date_format(gen_date, '%m.%Y') as month, COALESCE(sum(t2.transaction_amount), 0) as sum_of_transactions
 FROM month_table 
 LEFT JOIN 
 (SELECT person.id_person as id_person, transaction_date, transaction_amount
